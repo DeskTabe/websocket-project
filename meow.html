@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        const ws = new WebSocket("ws://localhost:2323")
+        const div = document.createElement("div")
+        
+ 
+        ws.addEventListener("message", msg => {
+            let firstarg
+            let secondarg
+            const parsedmessage = JSON.parse(msg.data)
+            parsedmessage.forEach(element => {
+                if (element.element) {
+                    firstarg = element.element
+                }
+                if (element.text) {
+                    secondarg = element.text
+                }
+            });
+            
+            const p = document.createElement(firstarg)
+            const content = document.createTextNode(secondarg)
+            p.appendChild(content)
+            document.body.appendChild(p) 
+        })
+
+        function getInput(){
+            let input = document.getElementById("input-field")
+            ws.send(input.value)
+            input.value = ""
+        }
+
+    </script>
+</head>
+<body>
+    <!-- <div><input style="height: 300px; width: 500px;"id="input-field" type="text" placeholder="Input a script to send!"></div>
+    <button style="font-size: 50px;" onclick="getInput()">Pow!</button> -->
+
+</body>
+</html>
